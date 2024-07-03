@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using CreativeTim.Argon.DotNetCore.Free.Infrastructure;
 using CreativeTim.Argon.DotNetCore.Free.Infrastructure.ErrorHandling;
@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using CreativeTim.Argon.DotNetCore.Free.Data;
+using System.Linq;
+using SQLitePCL;
 
 namespace CreativeTim.Argon.DotNetCore.Free.Controllers
 {
@@ -19,6 +22,7 @@ namespace CreativeTim.Argon.DotNetCore.Free.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ApplicationDbContext context;
 
         [TempData]
         public string StatusMessage { get; set; }
@@ -26,17 +30,27 @@ namespace CreativeTim.Argon.DotNetCore.Free.Controllers
         public HomeController(
             ILogger<HomeController> logger,
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            ApplicationDbContext context)
         {
             _logger = logger;
             _userManager = userManager;
             _signInManager = signInManager;
+            this.context= context;
         }
 
-        [HttpGet("/")]
+
+        [HttpGet("/index")]
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet("/")]
+        public IActionResult Main()
+        {
+            var _Users = context.Users.ToList();
+            return View(_Users);
         }
 
         [HttpGet("/icons")]

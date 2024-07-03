@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
@@ -58,12 +58,12 @@ namespace CreativeTim.Argon.DotNetCore.Free
                 // The easiest option for development outside a container is to use SQLite
                 // options.UseSqlite(Configuration.GetConnectionString("SqliteConnection"));
                 // Or use this for PostgreSQL:
-                options.UseNpgsql(Configuration.GetConnectionString("PostgresConnection"));
+                //options.UseNpgsql(Configuration.GetConnectionString("PostgresConnection"));
 
                 // Use this to connect to a MySQL server:
                 // options.UseMySQL(Configuration.GetConnectionString("MysqlConnection"));
                 // Or use this for SQL Server (if running on Windows):
-                // options.UseSqlServer(Configuration.GetConnectionString("MsSqlConnection"));
+                options.UseSqlServer(Configuration.GetConnectionString("SQLServer"));
             });
 
             services.AddDefaultIdentity<ApplicationUser>()
@@ -218,7 +218,7 @@ namespace CreativeTim.Argon.DotNetCore.Free
             app.UseEndpoints(eb =>
             {
                 eb.MapRazorPages();
-                eb.MapControllerRoute("default", "{controller=home}/{action=index}/{id?}");
+                eb.MapControllerRoute("default", "{controller=home}/{action=Main}/{id?}");
             });
         }
     }
